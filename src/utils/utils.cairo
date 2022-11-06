@@ -78,7 +78,8 @@ namespace Helpers {
 
             def post_debug(json):
                 if os.environ.get('DEBUG') == 'True':
-                    requests.post(url="http://localhost:8000", json=json)
+                    pouet = 1
+                    #requests.post(url="http://localhost:8000", json=json)
 
             def cairo_uint256_to_bytes32(item):
                 low = item.low.to_bytes(16, 'big')

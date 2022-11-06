@@ -8,6 +8,7 @@ from starkware.cairo.common.uint256 import Uint256
 // Local dependencies
 from kakarot.library import Kakarot, evm_contract_deployed
 from kakarot.stack import Stack
+from utils.utils import Helpers
 
 // Constructor
 @constructor
@@ -20,10 +21,28 @@ func constructor{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr
 @view
 func execute{
     syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr, bitwise_ptr: BitwiseBuiltin*
-}(code_len: felt, code: felt*, calldata_len: felt, calldata: felt*) -> (
+}(code_len: felt, code: felt*, calldata_len: felt, calldata: felt*, value: felt) -> (
     stack_len: felt, stack: Uint256*, memory_len: felt, memory: felt*, gas_used: felt
 ) {
     alloc_locals;
+
+    Helpers.setup_python_defs();
+    %{
+        import json
+        codex = cairo_bytes_to_hex(ids.code)
+        calldatax = cairo_bytes_to_hex(ids.calldata)
+
+        json_data = {
+            "code": f"{ids.code}",
+            "calldata": f"{ids.calldata}",
+            "codex": f"{codex}",
+            "calldatax": f"{calldatax}",
+        }
+        json_formatted = json.dumps(json_data, indent=4)
+        print(json_formatted)
+        # post_debug(json_data)
+    %}
+
     let context = Kakarot.execute(code_len=code_len, code=code, calldata=calldata);
     let len = Stack.len(context.stack);
     return (

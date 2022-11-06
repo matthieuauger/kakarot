@@ -811,6 +811,7 @@ test_cases = [
             "return_value": "",
         },
         "id": "Get the size of calldata when empty calldata - 0x36 CALLDATASIZE",
+        "marks": pytest.mark.sha4,
     },
     {
         "params": {
@@ -1293,6 +1294,7 @@ class TestZkEVM:
         res = await zk_evm.execute(
             code=[int(b, 16) for b in wrap(params["code"], 2)],
             calldata=[int(b, 16) for b in wrap(params["calldata"], 2)],
+            value=0,
         ).call(caller_address=1)
         assert res.result.stack == [
             Uint256(*self.int_to_uint256(int(s)))
