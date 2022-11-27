@@ -83,7 +83,7 @@ async def account_registry(starknet: Starknet):
     return await starknet.deploy(
         source="./src/kakarot/accounts/registry/account_registry.cairo",
         cairo_path=["src"],
-        disable_hint_validation=False,
+        disable_hint_validation=True,
         constructor_calldata=[1],
     )
 
@@ -93,5 +93,5 @@ async def contract_account_class(starknet: Starknet):
     return await starknet.declare(
         source="./src/kakarot/accounts/contract/contract_account.cairo",
         cairo_path=["src"],
-        disable_hint_validation=False,
+        disable_hint_validation=True,
     )

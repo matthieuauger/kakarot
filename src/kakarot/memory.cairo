@@ -43,19 +43,20 @@ namespace Memory {
         alloc_locals;
         let (new_memory: felt*) = alloc();
 
-        let bytes_len: felt = self.bytes_len;
+        let bytes_len: felt = self.bytes_len; // 0
 
-        if (bytes_len == 0) {
-            Helpers.fill(arr_len=offset, arr=new_memory, value=0);
-        }
-        let is_offset_greater_than_length = is_le(bytes_len, offset);
+        //if (bytes_len == 0) {
+        //    Helpers.fill(arr_len=offset, arr=new_memory, value=0);
+        //}
+        let is_offset_greater_than_length = is_le(bytes_len, offset); // offset = 1
         local max_copy: felt;
-        if (is_offset_greater_than_length == 1) {
+        //if (is_offset_greater_than_length == 1) {
+        // initialize memory
             Helpers.fill(arr_len=offset - bytes_len, arr=new_memory + bytes_len, value=0);
             max_copy = bytes_len;
-        } else {
-            max_copy = offset;
-        }
+        //} else {
+        //    max_copy = offset;
+        //}
         if (self.bytes_len != 0) {
             memcpy(dst=new_memory, src=self.bytes, len=max_copy);
         }
@@ -81,16 +82,20 @@ namespace Memory {
         let is_memory_growing = is_le(self.bytes_len, offset + 32);
         local new_bytes_len: felt;
 
-        if (is_memory_growing == 1) {
+        //if (is_memory_growing == 1) {
             new_bytes_len = offset + 32;
-        } else {
-            memcpy(
-                dst=new_memory + offset + 32,
-                src=self.bytes + offset + 32,
-                len=bytes_len - (offset) - 32,
-            );
-            new_bytes_len = bytes_len;
-        }
+        %{
+            print("offset")
+            print(ids.offset)
+        %}
+        //} else {
+        //    memcpy(
+        //        dst=new_memory + offset + 32,
+        //        src=self.bytes + offset + 32,
+        //        len=bytes_len - (offset) - 32,
+        //    );
+        //    new_bytes_len = bytes_len;
+        //}
 
         return new model.Memory(bytes=new_memory, bytes_len=new_bytes_len);
     }

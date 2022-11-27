@@ -989,9 +989,8 @@ test_cases = [
         },
         "id": "Memory operations",
         "marks": [
-            pytest.mark.MSTORE,
+            pytest.mark.SHA4,
             pytest.mark.StackMemoryStorageFlowOperations,
-            pytest.mark.skip("Returned memory missed the last empty bytes32"),
         ],
     },
     {
