@@ -83,13 +83,17 @@ namespace Helpers {
     }
 
     func compute_half_uint256{range_check_ptr}(val: felt*, i: felt, res: felt) -> (res: felt) {
+        if (i == 0) {
+            return (res=0);
+        }
+
         if (i == 1) {
             return (res=res + [val]);
-        } else {
-            let (temp_pow) = pow(256, i - 1);
-            let (res) = compute_half_uint256(val + 1, i - 1, res + [val] * temp_pow);
-            return (res=res);
         }
+
+        let (temp_pow) = pow(256, i - 1);
+        let (res) = compute_half_uint256(val + 1, i - 1, res + [val] * temp_pow);
+        return (res=res);
     }
 
     // @notice This function is used to convert a sequence of 8 bytes to a felt.
